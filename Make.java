@@ -209,6 +209,9 @@ class Make implements ToolProvider {
         new Args()
             // .with("--show-version")
             .with("--module-path", modulePath)
+            // .with("--show-module-resolution")
+            .with("--illegal-access=debug")
+            .with("-Dsun.reflect.debugModuleAccessChecks")
             .with(
                 "--add-opens",
                 "org.junit.jupiter.api/org.junit.jupiter.api.condition=org.junit.platform.commons")
@@ -224,10 +227,10 @@ class Make implements ToolProvider {
     command.addAll(java);
     command.with("--module", "org.junit.platform.console").withEach(junit);
     run.log(DEBUG, "JUnit: %s", command);
-    var process = new ProcessBuilder(command.toStringArray()).start();
+    var process = new ProcessBuilder(command.toStringArray()).inheritIO().start();
     var code = process.waitFor();
-    run.out.print(new String(process.getInputStream().readAllBytes()));
-    run.err.print(new String(process.getErrorStream().readAllBytes()));
+    //run.out.print(new String(process.getInputStream().readAllBytes()));
+    //run.err.print(new String(process.getErrorStream().readAllBytes()));
     if (code != 0) {
       throw new AssertionError("JUnit run exited with code " + code);
     }
