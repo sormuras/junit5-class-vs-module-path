@@ -40,10 +40,27 @@ org.junit.jupiter.engine.script.ScriptAccessor$SystemPropertyAccessor@275bf9b3
 <<
 ```
 
-##
+## Analysis
 
 At [ScriptExecutionManager.java#L85-L87](https://github.com/junit-team/junit5/blob/master/junit-jupiter-engine/src/main/java/org/junit/jupiter/engine/script/ScriptExecutionManager.java#L85-L87)
 the referenced `systemProperty` variable is bound.
 
 Why is `SimpleDynamicMethod` applied only when running on the class path?
 
+### Underlying Exception
+
+```text
+     Caused by: javax.script.ScriptException: TypeError: systemProperty.get is not a function in <eval> at line number 3
+       jdk.scripting.nashorn/jdk.nashorn.api.scripting.NashornScriptEngine.throwAsScriptException(NashornScriptEngine.java:477)
+       jdk.scripting.nashorn/jdk.nashorn.api.scripting.NashornScriptEngine.evalImpl(NashornScriptEngine.java:433)
+       jdk.scripting.nashorn/jdk.nashorn.api.scripting.NashornScriptEngine$3.eval(NashornScriptEngine.java:521)
+       java.scripting/javax.script.CompiledScript.eval(CompiledScript.java:89)
+       org.junit.jupiter.engine@5.5.0-SNAPSHOT/org.junit.jupiter.engine.script.ScriptExecutionManager.evaluate(ScriptExecutionManager.java:72)
+       [...]
+     Caused by: <eval>:3 TypeError: systemProperty.get is not a function
+       jdk.scripting.nashorn/jdk.nashorn.internal.runtime.ECMAErrors.error(ECMAErrors.java:57)
+       jdk.scripting.nashorn/jdk.nashorn.internal.runtime.ECMAErrors.typeError(ECMAErrors.java:213)
+       jdk.scripting.nashorn/jdk.nashorn.internal.runtime.ECMAErrors.typeError(ECMAErrors.java:185)
+       jdk.scripting.nashorn/jdk.nashorn.internal.runtime.ECMAErrors.typeError(ECMAErrors.java:172)
+       jdk.scripting.nashorn/jdk.nashorn.internal.runtime.Undefined.lookup(Undefined.java:100)
+```
