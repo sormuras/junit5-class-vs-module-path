@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/sormuras/junit5-class-vs-module-path.svg?branch=master)](https://travis-ci.com/sormuras/junit5-class-vs-module-path)
+
 # junit5-class-vs-module-path
 Same [tests](src/test/check/check/CheckTests.java), same binaries, different run modes.
 
